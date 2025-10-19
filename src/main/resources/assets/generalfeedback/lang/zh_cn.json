@@ -1,0 +1,14 @@
+{
+  "gui.generalfeedback.feedback": "意见反馈",
+  "gui.generalfeedback.mark": "体验评分(可选)",
+  "gui.generalfeedback.contact": "落款(可选)",
+  "gui.generalfeedback.star": "★",
+  "gui.generalfeedback.submit": "就这样",
+
+  "toast.generalfeedback.sending.title": "发送中",
+  "toast.generalfeedback.sending.desc": "请等我一下！",
+  "toast.generalfeedback.send_success.title": "收到",
+  "toast.generalfeedback.send_success.desc": "感谢您的反馈！",
+  "toast.generalfeedback.send_fail.title": "爆炸了",
+  "toast.generalfeedback.send_fail.desc": "请检查网络或填写内容！"
+}

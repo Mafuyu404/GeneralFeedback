@@ -1,0 +1,14 @@
+{
+  "gui.generalfeedback.feedback": "Feedback",
+  "gui.generalfeedback.mark": "Rating(Optional)",
+  "gui.generalfeedback.contact": "Contact(Optional)",
+  "gui.generalfeedback.star": "★",
+  "gui.generalfeedback.submit": "Submit",
+
+  "toast.generalfeedback.sending.title": "Sending",
+  "toast.generalfeedback.sending.desc": "Just a moment!",
+  "toast.generalfeedback.send_success.title": "Received",
+  "toast.generalfeedback.send_success.desc": "Thanks for feedback!",
+  "toast.generalfeedback.send_fail.title": "Sending failure",
+  "toast.generalfeedback.send_fail.desc": "Check network or input！"
+}
