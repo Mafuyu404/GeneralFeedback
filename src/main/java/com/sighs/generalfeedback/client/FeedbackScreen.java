@@ -35,12 +35,12 @@ public class FeedbackScreen extends Screen {
     }
 
     public void sendForm() {
+        Minecraft.getInstance().setScreen(null);
         SubmitEvent event = new SubmitEvent(entry, getForm());
         MinecraftForge.EVENT_BUS.post(event);
         SubmitEvent _event = KubeJSCompat.submit(event);
         if (event.isCanceled() || _event.isCanceled()) return;
         FeedbackUtils.post(_event.getEntry(), _event.getForm());
-        Minecraft.getInstance().setScreen(null);
     }
 
     public Form getForm() {
@@ -70,7 +70,7 @@ public class FeedbackScreen extends Screen {
         feedbackTextarea = new Textarea(x, y, width, 120, Component.literal(Component.translatable("gui.generalfeedback.feedback").getString() + ": " + Component.translatable(entry.title).getString()));
         String preset = FeedbackUtils.cache.getOrDefault(entry.id, Component.translatable(entry.placeholder).getString());
         feedbackTextarea.setText(preset);
-        feedbackTextarea.onChange(text -> FeedbackUtils.cache.put(entry.id, text));
+        feedbackTextarea.onChange(text -> FeedbackUtils.cache.put(entry.id, Component.translatable(text).getString()));
         addRenderableWidget(feedbackTextarea);
 
         y += 120 + margin;

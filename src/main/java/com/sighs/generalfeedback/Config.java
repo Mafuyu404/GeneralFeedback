@@ -8,6 +8,7 @@ public class Config {
 
     public static final ForgeConfigSpec.ConfigValue<Boolean> PAUSE_FEEDBACK_BUTTON;
     public static final ForgeConfigSpec.ConfigValue<Boolean> INVENTORY_FEEDBACK_BUTTON;
+    public static final ForgeConfigSpec.ConfigValue<Boolean> DEATH_FEEDBACK_BUTTON;
 
     static {
         BUILDER.push("Render Radius");
@@ -17,6 +18,9 @@ public class Config {
                 .define("enable", true);
         INVENTORY_FEEDBACK_BUTTON = BUILDER
                 .comment("displayFeedbackButtonOnPauseScreen")
+                .define("enable", true);
+        DEATH_FEEDBACK_BUTTON = BUILDER
+                .comment("displayFeedbackButtonOnDeathScreen")
                 .define("enable", true);
         BUILDER.pop();
 

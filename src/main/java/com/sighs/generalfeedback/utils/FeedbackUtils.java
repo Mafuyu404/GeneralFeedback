@@ -1,9 +1,11 @@
 package com.sighs.generalfeedback.utils;
 
 import com.sighs.generalfeedback.Generalfeedback;
+import com.sighs.generalfeedback.client.FeedbackScreen;
 import com.sighs.generalfeedback.init.Entry;
 import com.sighs.generalfeedback.init.Form;
 import com.sighs.generalfeedback.client.ItemIconToast;
+import com.sighs.generalfeedback.loader.EntryCache;
 import net.minecraft.client.Minecraft;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.ItemStack;
@@ -22,7 +24,7 @@ public class FeedbackUtils {
     public static HashMap<String, String> cache = new HashMap<>();
 
     public static void post(Entry entry, Form form) {
-        Minecraft.getInstance().getToasts().addToast(new ItemIconToast(Component.translatable("toast.generalfeedback.sending.title"), Component.translatable("toast.generalfeedback.sending.desc"), new ItemStack(Items.GUNPOWDER)));
+        ItemIconToast.show(Component.translatable("toast.generalfeedback.sending.title"), Component.translatable("toast.generalfeedback.sending.desc"), new ItemStack(Items.GUNPOWDER));
 
         try {
             HttpURLConnection connection = getConnection(entry, form);
@@ -42,7 +44,7 @@ public class FeedbackUtils {
 
                     // 发送成功！
                     Minecraft.getInstance().getToasts().clear();
-                    Minecraft.getInstance().getToasts().addToast(new ItemIconToast(Component.translatable("toast.generalfeedback.send_success.title"), Component.translatable("toast.generalfeedback.send_success.desc"), new ItemStack(Items.GLOWSTONE_DUST)));
+                    ItemIconToast.show(Component.translatable("toast.generalfeedback.send_success.title"), Component.translatable("toast.generalfeedback.send_success.desc"), new ItemStack(Items.GLOWSTONE_DUST));
                     cache.remove(entry.id);
                 }
             }
@@ -51,7 +53,7 @@ public class FeedbackUtils {
             connection.disconnect();
         } catch (Exception e) {
             Generalfeedback.LOGGER.warn(String.valueOf(e));
-            Minecraft.getInstance().getToasts().addToast(new ItemIconToast(Component.translatable("toast.generalfeedback.send_fail.title"), Component.translatable("toast.generalfeedback.send_fail.desc"), new ItemStack(Items.REDSTONE)));
+            ItemIconToast.show(Component.translatable("toast.generalfeedback.send_fail.title"), Component.translatable("toast.generalfeedback.send_fail.desc"), new ItemStack(Items.REDSTONE));
         }
     }
 
@@ -85,5 +87,11 @@ public class FeedbackUtils {
             os.write(input, 0, input.length);
         }
         return connection;
+    }
+
+    public static void openFeedbackScreenOf(String id) {
+        if (EntryCache.UnitMapCache.containsKey(id)) {
+            Minecraft.getInstance().setScreen(new FeedbackScreen(EntryCache.UnitMapCache.get(id)));
+        }
     }
 }
