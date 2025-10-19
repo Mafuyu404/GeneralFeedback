@@ -6,22 +6,15 @@ import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.narration.NarrationElementOutput;
 import net.minecraft.network.chat.Component;
+import net.minecraft.resources.ResourceLocation;
 import org.lwjgl.glfw.GLFW;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Consumer;
 
-/**
- * 一个简单的多行文本输入控件（基础实现）。
- * - 自动换行（按像素宽度）
- * - 支持换行符 '\n'
- * - 支持基本光标移动（左右上下）
- * - 支持退格和Delete
- * - 默认不绘制背景（透明），如需半透明背景可自行在 render() 中绘制矩形
- *
- * 注意：本实现并没有复杂的文本选择、剪贴板/复制粘贴、平滑滚动等功能——可以按需扩展。
- */
+import static com.sighs.generalfeedback.Generalfeedback.MODID;
+
 public class Textarea extends AbstractWidget {
     private final Component title;
     private String text = "";
@@ -32,6 +25,7 @@ public class Textarea extends AbstractWidget {
     private final Font font;
     private int scrollOffset = 0;
     private Consumer<String> onChange;
+    private static final ResourceLocation EDITOR_TEXTURE = new ResourceLocation(MODID, "textures/gui/editor.png");
 
     private static final int offsetX = 10;
     private static final int offsetY = 20;
@@ -53,7 +47,7 @@ public class Textarea extends AbstractWidget {
 
     @Override
     public void renderWidget(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTicks) {
-        GuiUtils.drawEditorPanel(guiGraphics, getX() - offsetX, getY() - offsetY, width + offsetW, height + offsetH);
+        GuiUtils.drawNinePatch(guiGraphics, EDITOR_TEXTURE, getX() - offsetX, getY() - offsetY, width + offsetW, height + offsetH, 256, 20);
 
         guiGraphics.drawString(font, title, getX(), getY() - offsetY + 7, 0xFF695B8B, false);
 
