@@ -10,5 +10,12 @@
   "toast.generalfeedback.send_success.title": "Received",
   "toast.generalfeedback.send_success.desc": "Thanks for feedback!",
   "toast.generalfeedback.send_fail.title": "Sending failure",
-  "toast.generalfeedback.send_fail.desc": "Check network or input！"
+  "toast.generalfeedback.send_fail.desc": "Check network or input！",
+
+  "text.autoconfig.generalfeedback.option.pauseFeedbackButton": "PauseFeedbackButton",
+  "text.autoconfig.generalfeedback.option.pauseFeedbackButton.@Tooltip": "When turned on, a feedback button will appear on the pause page.",
+  "text.autoconfig.generalfeedback.option.inventoryFeedbackButton": "InventoryFeedbackButton",
+  "text.autoconfig.generalfeedback.option.inventoryFeedbackButton.@Tooltip": "When turned on, a feedback button will appear on the inventory page.",
+  "text.autoconfig.generalfeedback.option.deathFeedbackButton": "DeathFeedbackButton",
+  "text.autoconfig.generalfeedback.option.deathFeedbackButton.@Tooltip": "When turned on, a feedback button will appear on the death page."
 }

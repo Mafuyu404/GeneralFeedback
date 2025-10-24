@@ -10,5 +10,12 @@
   "toast.generalfeedback.send_success.title": "收到",
   "toast.generalfeedback.send_success.desc": "感谢您的反馈！",
   "toast.generalfeedback.send_fail.title": "爆炸了",
-  "toast.generalfeedback.send_fail.desc": "请检查网络或填写内容！"
+  "toast.generalfeedback.send_fail.desc": "请检查网络或填写内容！",
+
+  "text.autoconfig.generalfeedback.option.pauseFeedbackButton": "暂停反馈按钮",
+  "text.autoconfig.generalfeedback.option.pauseFeedbackButton.@Tooltip": "开启后会在暂停界面显示反馈按钮。",
+  "text.autoconfig.generalfeedback.option.inventoryFeedbackButton": "物品栏反馈按钮",
+  "text.autoconfig.generalfeedback.option.inventoryFeedbackButton.@Tooltip": "开启后会在物品栏界面显示反馈按钮。",
+  "text.autoconfig.generalfeedback.option.deathFeedbackButton": "死亡反馈按钮",
+  "text.autoconfig.generalfeedback.option.deathFeedbackButton.@Tooltip": "开启后会在死亡界面显示反馈按钮。"
 }
