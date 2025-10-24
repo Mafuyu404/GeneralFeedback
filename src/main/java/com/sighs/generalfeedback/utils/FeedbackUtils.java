@@ -112,7 +112,7 @@ public class FeedbackUtils {
         Minecraft.getInstance().execute(() -> {
             Generalfeedback.LOGGER.warn("Response:{}", response);
             // 发送成功！
-            Minecraft.getInstance().getToasts().clear();
+            Minecraft.getInstance().getToastManager().clear();
             ItemIconToast.show(
                     Component.translatable("toast.generalfeedback.send_success.title"),
                     Component.translatable("toast.generalfeedback.send_success.desc"),
