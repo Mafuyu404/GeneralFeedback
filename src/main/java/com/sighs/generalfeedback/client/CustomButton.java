@@ -10,8 +10,8 @@ import net.minecraft.resources.ResourceLocation;
 import static com.sighs.generalfeedback.Generalfeedback.MODID;
 
 public abstract class CustomButton extends Button {
-    protected static final ResourceLocation BUTTON_NORMAL_TEXTURE = new ResourceLocation(MODID, "textures/gui/button_0.png");
-    protected static final ResourceLocation BUTTON_PRESSED_TEXTURE = new ResourceLocation(MODID, "textures/gui/button_1.png");
+    protected static final ResourceLocation BUTTON_NORMAL_TEXTURE = ResourceLocation.fromNamespaceAndPath(MODID, "textures/gui/button_0.png");
+    protected static final ResourceLocation BUTTON_PRESSED_TEXTURE = ResourceLocation.fromNamespaceAndPath(MODID, "textures/gui/button_1.png");
 
     private static final int TEXTURE_SIZE = 18;
     private static final int BORDER = 6;

@@ -17,7 +17,7 @@ import java.util.function.Consumer;
 import static com.sighs.generalfeedback.Generalfeedback.MODID;
 
 public class Textarea extends AbstractWidget {
-    private static final ResourceLocation EDITOR_TEXTURE = new ResourceLocation(MODID, "textures/gui/editor.png");
+    private static final ResourceLocation EDITOR_TEXTURE = ResourceLocation.fromNamespaceAndPath(MODID, "textures/gui/editor.png");
     private static final int OFFSET_X = 10, OFFSET_Y = 20, OFFSET_W = 20, OFFSET_H = 30;
     private static final int INNER_PADDING = 4;
 
@@ -143,9 +143,9 @@ public class Textarea extends AbstractWidget {
     }
 
     @Override
-    public boolean mouseScrolled(double mx, double my, double delta) {
+    public boolean mouseScrolled(double mx, double my, double sx, double sy) {
         if (!isMouseOver(mx, my)) return false;
-        int step = (int) Math.signum(delta);
+        int step = (int) Math.signum(sy);
         scrollOffset = Math.max(0, scrollOffset - step);
         return true;
     }

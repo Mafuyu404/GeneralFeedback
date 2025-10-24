@@ -1,1 +1,0 @@
-com.sighs.generalfeedback.compat.kubejs.JSPlugin
