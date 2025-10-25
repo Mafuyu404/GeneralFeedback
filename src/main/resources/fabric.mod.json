@@ -29,7 +29,7 @@
   "depends": {
     "fabricloader": "*",
     "fabric": "*",
-    "minecraft": "1.21.6",
+    "minecraft": ">=1.21.6 <=1.21.8",
     "cloth-config2": "*"
   },
   "accessWidener" : "generalfeedback.accesswidener"
