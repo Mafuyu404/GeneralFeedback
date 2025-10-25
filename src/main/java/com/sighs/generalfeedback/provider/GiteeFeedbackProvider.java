@@ -10,12 +10,12 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class GiteeFeedbackProvider implements FeedbackProvider {
-    
+
     @Override
     public boolean supports(Entry entry) {
         return entry.url.contains("gitee.com/api/v5");
     }
-    
+
     @Override
     public void sendFeedback(Entry entry, Form form) {
         FeedbackUtils.showSendingToast();

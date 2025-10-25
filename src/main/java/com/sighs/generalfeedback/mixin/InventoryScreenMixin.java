@@ -16,7 +16,9 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(value = InventoryScreen.class)
 public class InventoryScreenMixin extends Screen {
-    @Shadow @Final private RecipeBookComponent recipeBookComponent;
+    @Shadow
+    @Final
+    private RecipeBookComponent recipeBookComponent;
 
     protected InventoryScreenMixin(Component p_96550_) {
         super(p_96550_);

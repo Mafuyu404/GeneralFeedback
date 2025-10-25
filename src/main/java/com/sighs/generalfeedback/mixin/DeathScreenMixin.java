@@ -2,10 +2,8 @@ package com.sighs.generalfeedback.mixin;
 
 import com.sighs.generalfeedback.Config;
 import com.sighs.generalfeedback.client.ActionButton;
-import com.sighs.generalfeedback.client.FeedbackButton;
 import com.sighs.generalfeedback.loader.EntryCache;
 import com.sighs.generalfeedback.utils.FeedbackUtils;
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screens.DeathScreen;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Component;

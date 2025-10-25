@@ -10,12 +10,12 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class VikaFeedbackProvider implements FeedbackProvider {
-    
+
     @Override
     public boolean supports(Entry entry) {
         return entry.url.contains("api.vika.cn");
     }
-    
+
     @Override
     public void sendFeedback(Entry entry, Form form) {
         FeedbackUtils.showSendingToast();

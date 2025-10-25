@@ -10,12 +10,12 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class GitHubFeedbackProvider implements FeedbackProvider {
-    
+
     @Override
     public boolean supports(Entry entry) {
         return entry.url.contains("api.github.com");
     }
-    
+
     @Override
     public void sendFeedback(Entry entry, Form form) {
         FeedbackUtils.showSendingToast();

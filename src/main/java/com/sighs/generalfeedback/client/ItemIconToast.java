@@ -10,8 +10,6 @@ import net.minecraft.world.item.ItemStack;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.api.distmarker.OnlyIn;
 
-import static net.minecraft.client.model.TridentModel.TEXTURE;
-
 @OnlyIn(Dist.CLIENT)
 public class ItemIconToast implements Toast {
     private static final ResourceLocation BACKGROUND_SPRITE = ResourceLocation.withDefaultNamespace("toast/advancement");

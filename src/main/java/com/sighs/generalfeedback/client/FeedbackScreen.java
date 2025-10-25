@@ -1,6 +1,5 @@
 package com.sighs.generalfeedback.client;
 
-import com.sighs.generalfeedback.Generalfeedback;
 import com.sighs.generalfeedback.event.SubmitEvent;
 import com.sighs.generalfeedback.init.Entry;
 import com.sighs.generalfeedback.init.Form;
@@ -54,7 +53,7 @@ public class FeedbackScreen extends Screen {
 
     private Textarea feedbackTextarea;
     private Textarea contactTextarea;
-    private List<BooleanButton> markButtonList = new ArrayList<>();
+    private final List<BooleanButton> markButtonList = new ArrayList<>();
     private ActionButton submitButton;
 
     private int storedY;
@@ -127,7 +126,7 @@ public class FeedbackScreen extends Screen {
         GuiUtils.drawNinePatch(guiGraphics, ResourceLocation.fromNamespaceAndPath(MODID, "textures/gui/container.png"), x, storedY, width, 24, 256, 20);
         guiGraphics.drawString(font, Component.translatable("gui.generalfeedback.mark"), x + 10, storedY + 7, 0xFF695B8B, false);
 
-        for(Renderable renderable : this.renderables) {
+        for (Renderable renderable : this.renderables) {
             renderable.render(guiGraphics, mouseX, mouseY, partialTick);
         }
     }

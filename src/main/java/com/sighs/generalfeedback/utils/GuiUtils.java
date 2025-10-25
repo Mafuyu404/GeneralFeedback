@@ -1,18 +1,12 @@
 package com.sighs.generalfeedback.utils;
 
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
-import net.minecraft.client.gui.components.Button;
-import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
-import org.lwjgl.glfw.GLFW;
-
-import static com.sighs.generalfeedback.Generalfeedback.MODID;
 
 public class GuiUtils {
     public static void drawNinePatch(GuiGraphics graphics, ResourceLocation texture,
-                                      int x, int y, int width, int height,
-                                      int textureSize, int border) {
+                                     int x, int y, int width, int height,
+                                     int textureSize, int border) {
         // 角落（不拉伸）
         graphics.blit(texture, x, y, 0, 0, border, border, textureSize, textureSize); // 左上
         graphics.blit(texture, x + width - border, y, textureSize - border, 0, border, border, textureSize, textureSize); // 右上

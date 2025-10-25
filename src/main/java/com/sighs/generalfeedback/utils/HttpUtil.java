@@ -2,7 +2,9 @@ package com.sighs.generalfeedback.utils;
 
 import com.sighs.generalfeedback.Generalfeedback;
 
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLEncoder;
@@ -80,11 +82,11 @@ public class HttpUtil {
                     }
                 } else {
                     error.accept("Unexpected HTTP response: " + responseCode);
-                    Generalfeedback.LOGGER.warn("Unexpected HTTP response: " + responseCode);
+                    Generalfeedback.LOGGER.warn("Unexpected HTTP response: {}", responseCode);
                 }
             } catch (Exception e) {
                 error.accept("HTTP request failed: " + e.getMessage());
-                Generalfeedback.LOGGER.warn("HTTP request failed: " + e.getMessage());
+                Generalfeedback.LOGGER.warn("HTTP request failed: {}", e.getMessage());
             } finally {
                 if (connection != null) {
                     connection.disconnect();
@@ -105,7 +107,7 @@ public class HttpUtil {
     private static String buildFormData(Map<String, String> formData) {
         StringBuilder sb = new StringBuilder();
         for (Map.Entry<String, String> entry : formData.entrySet()) {
-            if (sb.length() > 0) {
+            if (!sb.isEmpty()) {
                 sb.append("&");
             }
             // 对键和值进行 URL 编码
