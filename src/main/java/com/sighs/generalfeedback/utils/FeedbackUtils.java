@@ -1,89 +1,63 @@
 package com.sighs.generalfeedback.utils;
 
 import com.sighs.generalfeedback.Generalfeedback;
+import com.sighs.generalfeedback.api.FeedbackProvider;
 import com.sighs.generalfeedback.client.FeedbackScreen;
 import com.sighs.generalfeedback.client.ItemIconToast;
 import com.sighs.generalfeedback.init.Entry;
 import com.sighs.generalfeedback.init.Form;
 import com.sighs.generalfeedback.loader.EntryCache;
+import com.sighs.generalfeedback.provider.GitHubFeedbackProvider;
+import com.sighs.generalfeedback.provider.GiteeFeedbackProvider;
+import com.sighs.generalfeedback.provider.VikaFeedbackProvider;
 import net.minecraft.client.Minecraft;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 public class FeedbackUtils {
     public static HashMap<String, String> cache = new HashMap<>();
 
-    public static void post(Entry entry, Form form) {
-        if (entry.url.contains("api.vika.cn")) {
-            addVikaRecord(entry, form);
-        }
-        if (entry.url.contains("api.github.com")) {
-            createGitHubIssue(entry, form);
-        }
+    private static final List<FeedbackProvider> providers = new ArrayList<>();
+
+    // 这里注册所有 provider
+    static {
+        providers.add(new VikaFeedbackProvider());
+        providers.add(new GitHubFeedbackProvider());
+        providers.add(new GiteeFeedbackProvider());
     }
 
-    public static void addVikaRecord(Entry entry, Form form) {
+    public static void post(Entry entry, Form form) {
+        for (FeedbackProvider provider : providers) {
+            if (provider.supports(entry)) {
+                provider.sendFeedback(entry, form);
+                return;
+            }
+        }
+        handleFailure("Unsupported feedback provider for URL: " + entry.url);
+    }
+
+    public static void showSendingToast() {
         ItemIconToast.show(Component.translatable("toast.generalfeedback.sending.title"),
                 Component.translatable("toast.generalfeedback.sending.desc"),
                 new ItemStack(Items.GUNPOWDER));
-
-        Map<String, String> headers = new HashMap<>();
-        headers.put("Authorization", "Bearer " + entry.token);
-        headers.put("Content-Type", "application/json");
-
-        String jsonBody = "{"
-                + "\"records\": [{"
-                + "\"fields\": {"
-                + "\"意见反馈\": \"" + form.feedback.replace("\n", "\\n") + "\","
-                + "\"体验评分\": " + form.mark + ","
-                + "\"落款\": \"" + form.contact.replace("\n", "\\n") + "\""
-                + "}"
-                + "}],"
-                + "\"fieldKey\": \"name\""
-                + "}";
-
-        HttpUtil.fetch(entry.url, "POST", headers, jsonBody, null, 5000,
-                response -> {
-                    sendSuccess(response);
-                    cache.remove(entry.id);
-                },
-                FeedbackUtils::sendFail
-        );
     }
 
-    public static void createGitHubIssue(Entry entry, Form form) {
-        Map<String, String> headers = new HashMap<>();
-        headers.put("Authorization", "Bearer " + entry.token);
-        headers.put("Content-Type", "application/json");
-
-        String title = (form.mark != 0 ? ("(" + form.mark + "★) ") : "")
-                + Minecraft.getInstance().player.getDisplayName().getString() + ": "
-                + form.feedback.substring(0, Math.min(form.feedback.length(), 30))
-                + (form.feedback.length() > 30 ? "......" : "");
-        String body = form.feedback + "\n\nFrom:\n" + form.contact;
-
-        String jsonBody = "{"
-                + "\"title\": \"" + escapeJson(title) + "\","
-                + "\"body\": \"" + escapeJson(body) + "\""
-                + "}";
-
-        // 发送请求
-        HttpUtil.fetch(entry.url, "POST", headers, jsonBody, null, 5000,
-                response -> {
-                    sendSuccess(response);
-                    cache.remove(entry.id);
-                },
-                FeedbackUtils::sendFail
-        );
+    public static void handleSuccess(String response, String entryId) {
+        sendSuccess(response);
+        cache.remove(entryId);
     }
 
-    // 辅助方法：转义 JSON 特殊字符
-    private static String escapeJson(String input) {
+    public static void handleFailure(String error) {
+        sendFail(error);
+    }
+
+    // 转义 JSON 特殊字符
+    public static String escapeJson(String input) {
         return input.replace("\\", "\\\\")
                 .replace("\"", "\\\"")
                 .replace("\b", "\\b")
@@ -93,8 +67,8 @@ public class FeedbackUtils {
                 .replace("\t", "\\t");
     }
 
-    // 辅助方法：将字符串列表转换为 JSON 数组
-    private String toJsonArray(List<String> items) {
+    // 将字符串列表转换为 JSON 数组
+    public static String toJsonArray(List<String> items) {
         if (items == null || items.isEmpty()) {
             return "[]";
         }
@@ -106,6 +80,17 @@ public class FeedbackUtils {
         }
         sb.append("]");
         return sb.toString();
+    }
+
+    public static String generateIssueTitle(Form form) {
+        return (form.mark != 0 ? ("(" + form.mark + "★) ") : "")
+                + Minecraft.getInstance().player.getDisplayName().getString() + ": "
+                + form.feedback.substring(0, Math.min(form.feedback.length(), 30))
+                + (form.feedback.length() > 30 ? "......" : "");
+    }
+
+    public static String generateIssueBody(Form form) {
+        return form.feedback + "\n\nFrom:\n" + form.contact;
     }
 
     private static void sendSuccess(String response) {
