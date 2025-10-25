@@ -5,6 +5,7 @@ import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.toasts.Toast;
 import net.minecraft.client.gui.components.toasts.ToastComponent;
 import net.minecraft.network.chat.Component;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.api.distmarker.OnlyIn;
@@ -13,6 +14,7 @@ import static net.minecraft.client.model.TridentModel.TEXTURE;
 
 @OnlyIn(Dist.CLIENT)
 public class ItemIconToast implements Toast {
+    private static final ResourceLocation BACKGROUND_SPRITE = ResourceLocation.withDefaultNamespace("toast/advancement");
     private final Component title;
     private final Component description;
     private final ItemStack icon;
@@ -25,7 +27,7 @@ public class ItemIconToast implements Toast {
 
     @Override
     public Visibility render(GuiGraphics gui, ToastComponent toastComponent, long timer) {
-        gui.blit(TEXTURE, 0, 0, 0, 0, this.width(), this.height());
+        gui.blitSprite(BACKGROUND_SPRITE, 0, 0, this.width(), this.height());
 
         gui.renderFakeItem(icon, 8, 8);
 
