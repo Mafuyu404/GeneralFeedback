@@ -8,12 +8,16 @@ import com.sighs.generalfeedback.utils.FeedbackUtils;
 import com.sighs.generalfeedback.utils.GuiUtils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.components.Renderable;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Component;
+import net.minecraft.resources.ResourceLocation;
 import net.neoforged.neoforge.common.NeoForge;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import static com.sighs.generalfeedback.Generalfeedback.MODID;
 
 public class FeedbackScreen extends Screen {
     private final Entry entry;
@@ -117,11 +121,14 @@ public class FeedbackScreen extends Screen {
 
     @Override
     public void render(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTick) {
+        this.renderBackground(guiGraphics, mouseX, mouseY, partialTick);
         int width = 240;
         int x = (this.width - width) / 2;
-        GuiUtils.drawNinePatch(guiGraphics, Generalfeedback.id("textures/gui/container.png"), x, storedY, width, 24, 256, 20);
+        GuiUtils.drawNinePatch(guiGraphics, ResourceLocation.fromNamespaceAndPath(MODID, "textures/gui/container.png"), x, storedY, width, 24, 256, 20);
         guiGraphics.drawString(font, Component.translatable("gui.generalfeedback.mark"), x + 10, storedY + 7, 0xFF695B8B, false);
 
-        super.render(guiGraphics, mouseX, mouseY, partialTick);
+        for(Renderable renderable : this.renderables) {
+            renderable.render(guiGraphics, mouseX, mouseY, partialTick);
+        }
     }
 }
