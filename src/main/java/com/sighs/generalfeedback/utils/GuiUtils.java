@@ -1,7 +1,7 @@
 package com.sighs.generalfeedback.utils;
 
 import net.minecraft.client.gui.GuiGraphics;
-import net.minecraft.client.renderer.RenderPipelines;
+import net.minecraft.client.renderer.RenderType;
 import net.minecraft.resources.ResourceLocation;
 
 public class GuiUtils {
@@ -44,6 +44,6 @@ public class GuiUtils {
     private static void blitRegion(GuiGraphics g, ResourceLocation tex,
                                    int x, int y, int w, int h,
                                    int u, int v, int uw, int vh, int texW, int texH) {
-        g.blit(RenderPipelines.GUI_TEXTURED, tex, x, y, (float) u, (float) v, w, h, uw, vh, texW, texH);
+        g.blit(RenderType::guiTextured, tex, x, y, (float) u, (float) v, w, h, uw, vh, texW, texH);
     }
 }

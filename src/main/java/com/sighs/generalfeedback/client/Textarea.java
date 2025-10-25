@@ -6,9 +6,6 @@ import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.AbstractWidget;
 import net.minecraft.client.gui.narration.NarrationElementOutput;
-import net.minecraft.client.input.CharacterEvent;
-import net.minecraft.client.input.KeyEvent;
-import net.minecraft.client.input.MouseButtonEvent;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import org.lwjgl.glfw.GLFW;
@@ -48,7 +45,7 @@ public class Textarea extends AbstractWidget {
 
     @Override
     public void renderWidget(GuiGraphics g, int mouseX, int mouseY, float partialTicks) {
-        GuiUtils. drawNinePatch(g, EDITOR_TEXTURE, getX() - OFFSET_X, getY() - OFFSET_Y, width + OFFSET_W, height + OFFSET_H, 256, 20);
+        GuiUtils.drawNinePatch(g, EDITOR_TEXTURE, getX() - OFFSET_X, getY() - OFFSET_Y, width + OFFSET_W, height + OFFSET_H, 256, 20);
         g.drawString(font, title, getX(), getY() - OFFSET_Y + 7, 0xFF695B8B, false);
 
         var layout = new TextLayout(text, font, maxWidth);
@@ -75,33 +72,31 @@ public class Textarea extends AbstractWidget {
     }
 
     @Override
-    public boolean charTyped(net.minecraft.client.input.CharacterEvent characterEvent) {
+    public boolean charTyped(char c, int modifiers) {
         if (!visible) return false;
-        int codePoint = characterEvent.codepoint();
-        if (Character.isISOControl(codePoint) && codePoint != '\n') return false;
-        insertChar(codePoint);
+        if (Character.isISOControl(c) && c != '\n') return false;
+        insertChar(c);
         return true;
     }
 
-    private void insertChar(int codePoint) {
+    private void insertChar(char c) {
         if (text.length() >= 1024) return;
-        String s = new String(Character.toChars(codePoint));
-        text = text.substring(0, cursorIndex) + s + text.substring(cursorIndex);
-        cursorIndex += s.length();
+        text = text.substring(0, cursorIndex) + c + text.substring(cursorIndex);
+        cursorIndex++;
         ensureCursorVisible();
         notifyChange();
     }
 
     @Override
-    public boolean keyPressed(KeyEvent keyEvent) {
+    public boolean keyPressed(int keyCode, int scanCode, int modifiers) {
         if (!visible) return false;
-        switch (keyEvent.key()) {
+        switch (keyCode) {
             case GLFW.GLFW_KEY_BACKSPACE -> deleteChar(-1);
             case GLFW.GLFW_KEY_DELETE -> deleteChar(0);
             case GLFW.GLFW_KEY_ENTER, GLFW.GLFW_KEY_KP_ENTER -> insertChar('\n');
             case GLFW.GLFW_KEY_LEFT -> cursorIndex = Math.max(0, cursorIndex - 1);
             case GLFW.GLFW_KEY_RIGHT -> cursorIndex = Math.min(text.length(), cursorIndex + 1);
-            case GLFW.GLFW_KEY_UP, GLFW.GLFW_KEY_DOWN -> moveVertical(keyEvent.key() == GLFW.GLFW_KEY_UP ? -1 : 1);
+            case GLFW.GLFW_KEY_UP, GLFW.GLFW_KEY_DOWN -> moveVertical(keyCode == GLFW.GLFW_KEY_UP ? -1 : 1);
             default -> {
                 return false;
             }
@@ -130,14 +125,14 @@ public class Textarea extends AbstractWidget {
     }
 
     @Override
-    public boolean mouseClicked(MouseButtonEvent mouseButtonEvent, boolean bl) {
-        if (!isMouseOver(mouseButtonEvent.x(), mouseButtonEvent.y())) {
+    public boolean mouseClicked(double mouseX, double mouseY, int button) {
+        if (!isMouseOver(mouseX, mouseY)) {
             setFocused(false);
             return false;
         }
         setFocused(true);
-        int localX = (int) (mouseButtonEvent.x() - getX() - INNER_PADDING);
-        int localY = (int) (mouseButtonEvent.y() - getY() - INNER_PADDING);
+        int localX = (int) (mouseX - getX() - INNER_PADDING);
+        int localY = (int) (mouseY - getY() - INNER_PADDING);
 
         var layout = new TextLayout(text, font, maxWidth);
         int line = scrollOffset + Math.max(0, Math.min(localY / lineHeight, layout.lines.size() - 1));
