@@ -3,7 +3,7 @@
   "minVersion": "0.8",
   "package": "com.sighs.generalfeedback.mixin",
   "compatibilityLevel": "JAVA_8",
-  "refmap": "generalfeedback-refmap.json",
+  "refmap": "GeneralFeedback-refmap.json",
   "mixins": [
   ],
   "client": [

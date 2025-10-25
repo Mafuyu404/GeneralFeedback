@@ -12,6 +12,7 @@
   "toast.generalfeedback.send_fail.title": "Sending failure",
   "toast.generalfeedback.send_fail.desc": "Check network or input！",
 
+  "text.autoconfig.generalfeedback.title": "General Feedback Config",
   "text.autoconfig.generalfeedback.option.pauseFeedbackButton": "PauseFeedbackButton",
   "text.autoconfig.generalfeedback.option.pauseFeedbackButton.@Tooltip": "When turned on, a feedback button will appear on the pause page.",
   "text.autoconfig.generalfeedback.option.inventoryFeedbackButton": "InventoryFeedbackButton",

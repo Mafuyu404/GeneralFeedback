@@ -4,7 +4,6 @@ import com.sighs.generalfeedback.utils.GuiUtils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.Button;
-import net.minecraft.client.input.MouseButtonEvent;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 
@@ -36,17 +35,4 @@ public abstract class CustomButton extends Button {
     }
 
     protected abstract ResourceLocation getTexture();
-
-    @Override
-    public boolean mouseClicked(MouseButtonEvent mouseButtonEvent, boolean bl) {
-        if (this.active && this.visible && this.isMouseOver(mouseButtonEvent.x(), mouseButtonEvent.y())) {
-            return super.mouseClicked(mouseButtonEvent, bl);
-        }
-        return false;
-    }
-
-    @Override
-    public boolean mouseReleased(MouseButtonEvent mouseButtonEvent) {
-        return super.mouseReleased(mouseButtonEvent);
-    }
 }
