@@ -143,9 +143,9 @@ public class Textarea extends AbstractWidget {
     }
 
     @Override
-    public boolean mouseScrolled(double mx, double my, double delta) {
+    public boolean mouseScrolled(double mx, double my, double sx, double sy) {
         if (!isMouseOver(mx, my)) return false;
-        int step = (int) Math.signum(delta);
+        int step = (int) Math.signum(sy);
         scrollOffset = Math.max(0, scrollOffset - step);
         return true;
     }

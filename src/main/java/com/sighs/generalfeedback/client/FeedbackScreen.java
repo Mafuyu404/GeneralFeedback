@@ -1,6 +1,5 @@
 package com.sighs.generalfeedback.client;
 
-import com.sighs.generalfeedback.compat.KubeJSCompat;
 import com.sighs.generalfeedback.event.SubmitEvent;
 import com.sighs.generalfeedback.init.Entry;
 import com.sighs.generalfeedback.init.Form;
@@ -39,9 +38,8 @@ public class FeedbackScreen extends Screen {
         Minecraft.getInstance().setScreen(null);
         SubmitEvent event = new SubmitEvent(entry, getForm());
         SubmitEvent.EVENT.invoker().onSubmit(event);
-        SubmitEvent _event = KubeJSCompat.submit(event);
-        if (event.isCanceled() || _event.isCanceled()) return;
-        FeedbackUtils.post(_event.getEntry(), _event.getForm());
+        if (event.isCanceled()) return;
+        FeedbackUtils.post(event.getEntry(), event.getForm());
     }
 
     public Form getForm() {
@@ -129,7 +127,7 @@ public class FeedbackScreen extends Screen {
         int x = (this.width - width) / 2;
         GuiUtils.drawNinePatch(guiGraphics, new ResourceLocation(MODID, "textures/gui/container.png"), x, storedY, width, 24, 256, 20);
         guiGraphics.drawString(font, Component.translatable("gui.generalfeedback.mark"), x + 10, storedY + 7, 0xFF695B8B, false);
-        for(Renderable renderable : this.renderables) {
+        for (Renderable renderable : this.renderables) {
             renderable.render(guiGraphics, mouseX, mouseY, partialTick);
         }
     }
