@@ -35,18 +35,4 @@ public abstract class CustomButton extends Button {
     }
 
     protected abstract ResourceLocation getTexture();
-
-
-    @Override
-    public boolean mouseClicked(double mouseX, double mouseY, int button) {
-        if (this.active && this.visible && this.clicked(mouseX, mouseY)) {
-            return super.mouseClicked(mouseX, mouseY, button);
-        }
-        return false;
-    }
-
-    @Override
-    public boolean mouseReleased(double mouseX, double mouseY, int button) {
-        return super.mouseReleased(mouseX, mouseY, button);
-    }
 }

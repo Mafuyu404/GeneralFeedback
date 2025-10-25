@@ -12,6 +12,7 @@
   "toast.generalfeedback.send_fail.title": "爆炸了",
   "toast.generalfeedback.send_fail.desc": "请检查网络或填写内容！",
 
+  "text.autoconfig.generalfeedback.title": "通用意见反馈配置",
   "text.autoconfig.generalfeedback.option.pauseFeedbackButton": "暂停反馈按钮",
   "text.autoconfig.generalfeedback.option.pauseFeedbackButton.@Tooltip": "开启后会在暂停界面显示反馈按钮。",
   "text.autoconfig.generalfeedback.option.inventoryFeedbackButton": "物品栏反馈按钮",
