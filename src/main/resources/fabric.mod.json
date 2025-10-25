@@ -4,7 +4,10 @@
   "version": "${version}",
   "name": "GeneralFeedback",
   "description": "",
-  "authors": [],
+  "authors": [
+    "Flechazo",
+    "Mafuyu404"
+  ],
   "contact": {},
   "license": "GPL-3.0",
   "icon": "assets/generalfeedback/icon.png",
@@ -24,9 +27,9 @@
     "generalfeedback.mixins.json"
   ],
   "depends": {
-    "fabricloader": ">=${loader_version}",
+    "fabricloader": "*",
     "fabric": "*",
-    "minecraft": "${minecraft_version}",
+    "minecraft": "*",
     "cloth-config2": "*"
   },
   "accessWidener" : "generalfeedback.accesswidener"

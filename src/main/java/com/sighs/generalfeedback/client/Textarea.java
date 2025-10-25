@@ -6,7 +6,6 @@ import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.AbstractWidget;
 import net.minecraft.client.gui.narration.NarrationElementOutput;
-import net.minecraft.client.input.CharacterEvent;
 import net.minecraft.client.input.KeyEvent;
 import net.minecraft.client.input.MouseButtonEvent;
 import net.minecraft.network.chat.Component;
@@ -48,7 +47,7 @@ public class Textarea extends AbstractWidget {
 
     @Override
     public void renderWidget(GuiGraphics g, int mouseX, int mouseY, float partialTicks) {
-        GuiUtils. drawNinePatch(g, EDITOR_TEXTURE, getX() - OFFSET_X, getY() - OFFSET_Y, width + OFFSET_W, height + OFFSET_H, 256, 20);
+        GuiUtils.drawNinePatch(g, EDITOR_TEXTURE, getX() - OFFSET_X, getY() - OFFSET_Y, width + OFFSET_W, height + OFFSET_H, 256, 20);
         g.drawString(font, title, getX(), getY() - OFFSET_Y + 7, 0xFF695B8B, false);
 
         var layout = new TextLayout(text, font, maxWidth);
