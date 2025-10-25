@@ -1,48 +1,17 @@
 package com.sighs.generalfeedback.client;
 
-import com.sighs.generalfeedback.utils.GuiUtils;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.GuiGraphics;
-import net.minecraft.client.gui.components.Button;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 
-import static com.sighs.generalfeedback.Generalfeedback.MODID;
-
-public class BooleanButton extends Button {
-    private static final ResourceLocation BUTTON_NORMAL_TEXTURE = new ResourceLocation(MODID, "textures/gui/button_0.png");
-    private static final ResourceLocation BUTTON_PRESSED_TEXTURE = new ResourceLocation(MODID, "textures/gui/button_1.png");
-
+public class BooleanButton extends CustomButton {
     public boolean value = false;
 
     public BooleanButton(int x, int y, int width, int height, Component text, OnPress onPress) {
-        super(x, y, width, height, text, onPress, Button.DEFAULT_NARRATION);
+        super(x, y, width, height, text, onPress);
     }
 
     @Override
-    public void renderWidget(GuiGraphics graphics, int mouseX, int mouseY, float partialTick) {
-        ResourceLocation texture = value ? BUTTON_PRESSED_TEXTURE : BUTTON_NORMAL_TEXTURE;
-        int textureSize = 18;
-        int border = 6;
-
-        GuiUtils.drawNinePatch(graphics, texture, getX(), getY(), getWidth(), getHeight(), textureSize, border);
-
-        int textColor = value ? 0xFFFFA0 : 0xFFFFFF;
-        graphics.drawCenteredString(Minecraft.getInstance().font,
-                getMessage(), getX() + getWidth() / 2,
-                getY() + (getHeight() - 10) / 2, textColor);
-    }
-
-    @Override
-    public boolean mouseClicked(double mouseX, double mouseY, int button) {
-        if (this.active && this.visible && this.clicked(mouseX, mouseY)) {
-            return super.mouseClicked(mouseX, mouseY, button);
-        }
-        return false;
-    }
-
-    @Override
-    public boolean mouseReleased(double mouseX, double mouseY, int button) {
-        return super.mouseReleased(mouseX, mouseY, button);
+    protected ResourceLocation getTexture() {
+        return value ? BUTTON_PRESSED_TEXTURE : BUTTON_NORMAL_TEXTURE;
     }
 }
