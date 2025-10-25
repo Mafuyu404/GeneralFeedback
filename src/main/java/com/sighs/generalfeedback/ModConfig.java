@@ -18,6 +18,7 @@ public class ModConfig implements ConfigData {
     @ConfigEntry.Gui.Tooltip
     public boolean deathFeedbackButton = true;
 
+    @ConfigEntry.Gui.Excluded
     private static ModConfig instance;
 
     public static void init() {

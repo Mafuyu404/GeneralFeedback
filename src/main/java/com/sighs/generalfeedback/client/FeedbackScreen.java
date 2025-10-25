@@ -1,9 +1,9 @@
 package com.sighs.generalfeedback.client;
 
 import com.sighs.generalfeedback.compat.KubeJSCompat;
+import com.sighs.generalfeedback.event.SubmitEvent;
 import com.sighs.generalfeedback.init.Entry;
 import com.sighs.generalfeedback.init.Form;
-import com.sighs.generalfeedback.event.SubmitEvent;
 import com.sighs.generalfeedback.utils.FeedbackUtils;
 import com.sighs.generalfeedback.utils.GuiUtils;
 import net.minecraft.client.Minecraft;
