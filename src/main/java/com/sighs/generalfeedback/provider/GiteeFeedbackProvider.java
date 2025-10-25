@@ -26,7 +26,6 @@ public class GiteeFeedbackProvider implements FeedbackProvider {
         String title = FeedbackUtils.generateIssueTitle(form);
         String body = FeedbackUtils.generateIssueBody(form);
 
-        // 处理Gitee API URL格式
         String apiUrl = entry.url;
         String repoFromUrl = null;
         final String prefix = "https://gitee.com/api/v5/repos/";
