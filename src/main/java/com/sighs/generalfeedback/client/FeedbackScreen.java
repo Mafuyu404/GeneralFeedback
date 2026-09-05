@@ -101,7 +101,7 @@ public class FeedbackScreen extends Screen {
         int x = (this.width - width) / 2;
         int y = 10;
 
-        feedbackTextarea = new Textarea(x, y, width, 120, Component.literal(Component.translatable("gui.generalfeedback.feedback").getString() + ": " + Component.translatable(entry.title).getString()));
+        feedbackTextarea = new Textarea(x, y, width, 120, Component.translatable(entry.title));
         if (entry.placeholder != null) {
             feedbackTextarea.setPlaceholder(Component.translatable(entry.placeholder));
         }
@@ -117,10 +117,11 @@ public class FeedbackScreen extends Screen {
         initMarkValue();
         for (int i = 0; i < 5; i++) {
             int _x = x + 95 + i * 28;
-            int finalI = i;
+            int mark = 5 - i;
+            int markIndex = mark - 1;
             BooleanButton booleanButton = new BooleanButton(
                     _x, y + 4, 26, 16,
-                    Component.translatable((i + 1) + Component.translatable("gui.generalfeedback.star").getString()),
+                    Component.translatable(mark + Component.translatable("gui.generalfeedback.star").getString()),
                     button -> {
                         BooleanButton b = (BooleanButton) button;
                         if (!b.value && markValue.contains(true)) {
@@ -128,7 +129,7 @@ public class FeedbackScreen extends Screen {
                             markButtonList.forEach(_b -> _b.value = false);
                         }
                         b.value = !b.value;
-                        markValue.set(finalI, b.value);
+                        markValue.set(markIndex, b.value);
                     }
             );
             markButtonList.add(booleanButton);
