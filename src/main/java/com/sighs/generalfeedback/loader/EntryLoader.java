@@ -28,14 +28,14 @@ public class EntryLoader {
     private static List<Entry> loadFromDir(Path path) {
         List<Entry> allRule = new ArrayList<>();
 
-
-        // 确保目录存在
-        if (!Files.exists(path)) {
-            try {
-                Files.createDirectories(path);
-            } catch (IOException e) {
-                e.printStackTrace();
+        try {
+            Files.createDirectories(path);
+            Path exampleFile = path.resolve("example.json");
+            if (Files.notExists(exampleFile)) {
+                Files.writeString(exampleFile, "{}\n");
             }
+        } catch (IOException e) {
+            e.printStackTrace();
             return allRule;
         }
 

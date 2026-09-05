@@ -8,9 +8,11 @@ import com.sighs.generalfeedback.utils.GuiUtils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.Renderable;
+import net.minecraft.client.gui.screens.ConfirmScreen;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
+import net.neoforged.neoforge.client.ClientHooks;
 import net.neoforged.neoforge.common.NeoForge;
 
 import java.util.ArrayList;
@@ -43,6 +45,38 @@ public class FeedbackScreen extends Screen {
         FeedbackUtils.post(event.getEntry(), event.getForm());
     }
 
+    private void showSubmitConfirmation() {
+        Minecraft minecraft = Minecraft.getInstance();
+        ConfirmScreen confirmScreen = new ConfirmScreen(
+                confirmed -> {
+                    ClientHooks.popGuiLayer(minecraft);
+                    if (confirmed) {
+                        sendForm();
+                    }
+                },
+                Component.translatable("gui.generalfeedback.confirm_submit.title"),
+                Component.translatable("gui.generalfeedback.confirm_submit.message"),
+                Component.translatable("gui.generalfeedback.confirm_submit.confirm"),
+                Component.translatable("gui.generalfeedback.confirm_submit.cancel")
+        ) {
+            @Override
+            protected void addButtons(int y) {
+                addExitButton(new ActionButton(
+                        width / 2 - 155, y, 150, 20,
+                        yesButton,
+                        button -> callback.accept(true)
+                ));
+                addExitButton(new ActionButton(
+                        width / 2 + 5, y, 150, 20,
+                        noButton,
+                        button -> callback.accept(false)
+                ));
+            }
+        };
+        ClientHooks.pushGuiLayer(minecraft, confirmScreen);
+        confirmScreen.setDelay(10);
+    }
+
     public Form getForm() {
         Form form = new Form();
         form.feedback = feedbackTextarea.getText();
@@ -68,7 +102,10 @@ public class FeedbackScreen extends Screen {
         int y = 10;
 
         feedbackTextarea = new Textarea(x, y, width, 120, Component.literal(Component.translatable("gui.generalfeedback.feedback").getString() + ": " + Component.translatable(entry.title).getString()));
-        String preset = FeedbackUtils.cache.getOrDefault(entry.id, Component.translatable(entry.placeholder).getString());
+        if (entry.placeholder != null) {
+            feedbackTextarea.setPlaceholder(Component.translatable(entry.placeholder));
+        }
+        String preset = FeedbackUtils.cache.getOrDefault(entry.id, "");
         feedbackTextarea.setText(preset);
         feedbackTextarea.onChange(text -> FeedbackUtils.cache.put(entry.id, Component.translatable(text).getString()));
         addRenderableWidget(feedbackTextarea);
@@ -105,15 +142,21 @@ public class FeedbackScreen extends Screen {
 
         y += 58 + margin;
 
+        int actionButtonWidth = 70;
+        int actionButtonGap = 10;
+        int actionButtonsX = (this.width - actionButtonWidth * 2 - actionButtonGap) / 2;
         Component submitText = Component.translatable("gui.generalfeedback.submit");
         submitButton = new ActionButton(
-                (this.width - 70) / 2, y, 70, 20,
+                actionButtonsX, y, actionButtonWidth, 20,
                 submitText,
-                button -> {
-                    sendForm();
-                }
+                button -> showSubmitConfirmation()
         );
         addRenderableWidget(submitButton);
+        addRenderableWidget(new ActionButton(
+                actionButtonsX + actionButtonWidth + actionButtonGap, y, actionButtonWidth, 20,
+                Component.translatable("gui.generalfeedback.cancel"),
+                button -> onClose()
+        ));
 
         setFocused(feedbackTextarea);
     }

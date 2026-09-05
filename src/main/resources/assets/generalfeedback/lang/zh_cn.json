@@ -9,6 +9,11 @@
   "gui.generalfeedback.contact": "落款(可选)",
   "gui.generalfeedback.star": "★",
   "gui.generalfeedback.submit": "就这样",
+  "gui.generalfeedback.cancel": "取消",
+  "gui.generalfeedback.confirm_submit.title": "确认提交反馈？",
+  "gui.generalfeedback.confirm_submit.message": "提交后将立即发送，是否继续？",
+  "gui.generalfeedback.confirm_submit.confirm": "确认提交",
+  "gui.generalfeedback.confirm_submit.cancel": "返回修改",
 
   "toast.generalfeedback.sending.title": "发送中",
   "toast.generalfeedback.sending.desc": "请等我一下！",

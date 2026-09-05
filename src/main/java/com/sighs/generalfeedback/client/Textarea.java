@@ -7,6 +7,7 @@ import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.AbstractWidget;
 import net.minecraft.client.gui.narration.NarrationElementOutput;
+import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import org.lwjgl.glfw.GLFW;
@@ -25,10 +26,12 @@ public class Textarea extends AbstractWidget {
     private final Font font;
     private final Component title;
     private final int lineHeight, maxWidth;
+    private Component placeholder = Component.empty();
 
     @Getter
     private String text = "";
     private int cursorIndex = 0;
+    private int selectionAnchor = 0;
     private int scrollOffset = 0;
     private Consumer<String> onChange;
 
@@ -58,8 +61,31 @@ public class Textarea extends AbstractWidget {
         int drawX = getX() + INNER_PADDING;
         int drawY = getY() + INNER_PADDING;
 
-        for (int i = 0; i < Math.min(maxVisible, layout.lines.size() - scrollOffset); i++) {
-            g.drawString(font, layout.lines.get(scrollOffset + i), drawX, drawY + i * lineHeight, 0xFFFFFFFF, true);
+        if (text.isEmpty()) {
+            var placeholderLayout = new TextLayout(placeholder.getString(), font, maxWidth);
+            for (int i = 0; i < Math.min(maxVisible, placeholderLayout.lines.size()); i++) {
+                g.drawString(font, placeholderLayout.lines.get(i), drawX, drawY + i * lineHeight, 0xFF808080, false);
+            }
+        } else {
+            int selectionStart = selectionStart();
+            int selectionEnd = selectionEnd();
+            for (int i = 0; i < Math.min(maxVisible, layout.lines.size() - scrollOffset); i++) {
+                int lineIndex = scrollOffset + i;
+                String line = layout.lines.get(lineIndex);
+                int lineStart = layout.starts.get(lineIndex);
+                int lineEnd = lineStart + line.length();
+                int lineY = drawY + i * lineHeight;
+
+                int highlightStart = Math.max(selectionStart, lineStart);
+                int highlightEnd = Math.min(selectionEnd, lineEnd);
+                if (highlightStart < highlightEnd) {
+                    int highlightX = drawX + font.width(line.substring(0, highlightStart - lineStart));
+                    int highlightWidth = font.width(line.substring(highlightStart - lineStart, highlightEnd - lineStart));
+                    g.fill(highlightX, lineY, highlightX + highlightWidth, lineY + lineHeight, 0xFF0000AA);
+                }
+
+                g.drawString(font, line, drawX, lineY, 0xFFFFFFFF, true);
+            }
         }
 
         if (isFocused() && (System.currentTimeMillis() / 500L) % 2L == 0L) {
@@ -82,9 +108,12 @@ public class Textarea extends AbstractWidget {
     }
 
     private void insertChar(char c) {
-        if (text.length() >= 1024) return;
-        text = text.substring(0, cursorIndex) + c + text.substring(cursorIndex);
-        cursorIndex++;
+        int selectionStart = selectionStart();
+        int selectionEnd = selectionEnd();
+        if (text.length() - (selectionEnd - selectionStart) >= 1024) return;
+        text = text.substring(0, selectionStart) + c + text.substring(selectionEnd);
+        cursorIndex = selectionStart + 1;
+        selectionAnchor = cursorIndex;
         ensureCursorVisible();
         notifyChange();
     }
@@ -92,13 +121,28 @@ public class Textarea extends AbstractWidget {
     @Override
     public boolean keyPressed(int keyCode, int scanCode, int modifiers) {
         if (!visible) return false;
+        if (Screen.isSelectAll(keyCode)) {
+            selectionAnchor = 0;
+            cursorIndex = text.length();
+            ensureCursorVisible();
+            return true;
+        }
         switch (keyCode) {
             case GLFW.GLFW_KEY_BACKSPACE -> deleteChar(-1);
             case GLFW.GLFW_KEY_DELETE -> deleteChar(0);
             case GLFW.GLFW_KEY_ENTER, GLFW.GLFW_KEY_KP_ENTER -> insertChar('\n');
-            case GLFW.GLFW_KEY_LEFT -> cursorIndex = Math.max(0, cursorIndex - 1);
-            case GLFW.GLFW_KEY_RIGHT -> cursorIndex = Math.min(text.length(), cursorIndex + 1);
-            case GLFW.GLFW_KEY_UP, GLFW.GLFW_KEY_DOWN -> moveVertical(keyCode == GLFW.GLFW_KEY_UP ? -1 : 1);
+            case GLFW.GLFW_KEY_LEFT -> {
+                cursorIndex = hasSelection() ? selectionStart() : Math.max(0, cursorIndex - 1);
+                selectionAnchor = cursorIndex;
+            }
+            case GLFW.GLFW_KEY_RIGHT -> {
+                cursorIndex = hasSelection() ? selectionEnd() : Math.min(text.length(), cursorIndex + 1);
+                selectionAnchor = cursorIndex;
+            }
+            case GLFW.GLFW_KEY_UP, GLFW.GLFW_KEY_DOWN -> {
+                moveVertical(keyCode == GLFW.GLFW_KEY_UP ? -1 : 1);
+                selectionAnchor = cursorIndex;
+            }
             default -> {
                 return false;
             }
@@ -108,12 +152,17 @@ public class Textarea extends AbstractWidget {
     }
 
     private void deleteChar(int offset) {
-        if (offset == -1 && cursorIndex > 0) {
+        if (hasSelection()) {
+            int selectionStart = selectionStart();
+            text = text.substring(0, selectionStart) + text.substring(selectionEnd());
+            cursorIndex = selectionStart;
+        } else if (offset == -1 && cursorIndex > 0) {
             text = text.substring(0, cursorIndex - 1) + text.substring(cursorIndex);
             cursorIndex--;
         } else if (offset == 0 && cursorIndex < text.length()) {
             text = text.substring(0, cursorIndex) + text.substring(cursorIndex + 1);
         }
+        selectionAnchor = cursorIndex;
         notifyChange();
     }
 
@@ -140,6 +189,7 @@ public class Textarea extends AbstractWidget {
         int line = scrollOffset + Math.max(0, Math.min(localY / lineHeight, layout.lines.size() - 1));
         int col = layout.charIndexAt(line, localX);
         cursorIndex = layout.indexAt(line, col);
+        selectionAnchor = cursorIndex;
         ensureCursorVisible();
         return true;
     }
@@ -171,6 +221,23 @@ public class Textarea extends AbstractWidget {
     public void setText(String t) {
         this.text = t == null ? "" : t;
         cursorIndex = Math.min(cursorIndex, text.length());
+        selectionAnchor = cursorIndex;
+    }
+
+    public void setPlaceholder(Component placeholder) {
+        this.placeholder = placeholder == null ? Component.empty() : placeholder;
+    }
+
+    private boolean hasSelection() {
+        return cursorIndex != selectionAnchor;
+    }
+
+    private int selectionStart() {
+        return Math.min(cursorIndex, selectionAnchor);
+    }
+
+    private int selectionEnd() {
+        return Math.max(cursorIndex, selectionAnchor);
     }
 
     private record CursorPos(int line, String before) {

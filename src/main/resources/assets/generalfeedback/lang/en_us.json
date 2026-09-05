@@ -9,6 +9,11 @@
   "gui.generalfeedback.contact": "Contact(Optional)",
   "gui.generalfeedback.star": "★",
   "gui.generalfeedback.submit": "Submit",
+  "gui.generalfeedback.cancel": "Cancel",
+  "gui.generalfeedback.confirm_submit.title": "Submit feedback?",
+  "gui.generalfeedback.confirm_submit.message": "Your feedback will be sent immediately. Do you want to continue?",
+  "gui.generalfeedback.confirm_submit.confirm": "Submit",
+  "gui.generalfeedback.confirm_submit.cancel": "Go Back",
 
   "toast.generalfeedback.sending.title": "Sending",
   "toast.generalfeedback.sending.desc": "Just a moment!",

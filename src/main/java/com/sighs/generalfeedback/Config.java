@@ -14,9 +14,9 @@ public class Config {
         BUILDER.push("config");
 
         PAUSE_FEEDBACK_BUTTON = BUILDER
-                .define("displayFeedbackButtonOnInventoryScreen", true);
-        INVENTORY_FEEDBACK_BUTTON = BUILDER
                 .define("displayFeedbackButtonOnPauseScreen", true);
+        INVENTORY_FEEDBACK_BUTTON = BUILDER
+                .define("displayFeedbackButtonOnInventoryScreen", true);
         DEATH_FEEDBACK_BUTTON = BUILDER
                 .define("displayFeedbackButtonOnDeathScreen", true);
         BUILDER.pop();
